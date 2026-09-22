@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0f1115">
-<title>Rainbet</title>
+<title>Robux Recycle</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
@@ -16,12 +16,7 @@
     overflow-x: hidden;
   }
 
-  /* LAYOUT */
-  .app {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    min-height: 100vh;
-  }
+  .app { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
 
   /* SIDEBAR */
   .sidebar {
@@ -48,25 +43,23 @@
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    background: linear-gradient(135deg, #22c55e, #16a34a);
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
-    font-size: 16px;
-    color: #0f1115;
+    font-weight: 900;
+    font-size: 15px;
+    color: #fff;
   }
-  .brand-name {
-    font-size: 17px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-  }
+  .brand-name { font-size: 16px; font-weight: 800; letter-spacing: -0.3px; }
+  .brand-name span { color: #ef4444; }
   .nav-label {
     font-size: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
     color: #6b7280;
     padding: 12px 10px 4px;
+    font-weight: 700;
   }
   .nav-item {
     display: flex;
@@ -75,22 +68,18 @@
     padding: 9px 10px;
     border-radius: 8px;
     font-size: 13.5px;
-    font-weight: 500;
+    font-weight: 600;
     color: #9ca3af;
     cursor: pointer;
     transition: all 0.12s;
     user-select: none;
   }
   .nav-item:hover { background: #1a1e25; color: #e8eaed; }
-  .nav-item.active { background: #1e2229; color: #22c55e; }
+  .nav-item.active { background: #1e2229; color: #ef4444; }
   .nav-item .ico { width: 16px; text-align: center; font-size: 14px; }
 
   /* MAIN */
-  .main {
-    padding: 16px 20px 40px;
-    max-width: 1100px;
-    width: 100%;
-  }
+  .main { padding: 16px 20px 40px; max-width: 1100px; width: 100%; }
   .topbar {
     display: flex;
     justify-content: space-between;
@@ -99,7 +88,7 @@
     flex-wrap: wrap;
     gap: 10px;
   }
-  .page-title { font-size: 20px; font-weight: 700; }
+  .page-title { font-size: 20px; font-weight: 800; letter-spacing: -0.3px; }
   .balance {
     display: flex;
     align-items: center;
@@ -109,8 +98,8 @@
     border-radius: 10px;
     padding: 8px 14px;
   }
-  .balance-label { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; }
-  .balance-amount { font-size: 16px; font-weight: 700; color: #22c55e; font-variant-numeric: tabular-nums; }
+  .balance-label { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; }
+  .balance-amount { font-size: 16px; font-weight: 800; color: #ef4444; font-variant-numeric: tabular-nums; }
   .reset-btn {
     background: transparent;
     border: 1px solid #2a2f38;
@@ -119,11 +108,12 @@
     padding: 6px 10px;
     border-radius: 6px;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
+    font-family: inherit;
   }
-  .reset-btn:hover { border-color: #22c55e; color: #22c55e; }
+  .reset-btn:hover { border-color: #ef4444; color: #ef4444; }
 
-  /* GAME PANELS */
+  /* PANELS */
   .game-panel { display: none; }
   .game-panel.active { display: block; }
 
@@ -144,7 +134,7 @@
     margin-top: 16px;
   }
   .ctrl-group { display: flex; flex-direction: column; gap: 6px; }
-  .ctrl-label { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+  .ctrl-label { font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.6px; font-weight: 700; }
   .ctrl-input {
     background: #0f1115;
     border: 1px solid #2a2f38;
@@ -155,50 +145,43 @@
     font-size: 14px;
     outline: none;
     font-variant-numeric: tabular-nums;
+    font-family: inherit;
   }
-  .ctrl-input:focus { border-color: #22c55e; }
+  .ctrl-input:focus { border-color: #ef4444; }
 
   .action-btn {
     height: 42px;
     padding: 0 24px;
     border: 0;
     border-radius: 8px;
-    background: #22c55e;
-    color: #0f1115;
-    font-weight: 700;
+    background: #ef4444;
+    color: #fff;
+    font-weight: 800;
     font-size: 14px;
     cursor: pointer;
     transition: all 0.12s;
     letter-spacing: 0.2px;
+    font-family: inherit;
   }
-  .action-btn:hover { background: #16a34a; }
+  .action-btn:hover { background: #dc2626; }
   .action-btn:active { transform: translateY(1px); }
   .action-btn:disabled { background: #2a2f38; color: #6b7280; cursor: not-allowed; }
-  .action-btn.danger { background: #ef4444; color: #fff; }
-  .action-btn.danger:hover { background: #dc2626; }
+  .action-btn.green { background: #22c55e; }
+  .action-btn.green:hover { background: #16a34a; }
 
   .btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
 
-  /* CHICKEN GAME */
+  /* CHICKEN */
   .chicken-track {
     position: relative;
-    height: 180px;
+    height: 140px;
     background: #0f1115;
     border: 1px solid #2a2f38;
     border-radius: 12px;
     overflow: hidden;
+    margin: 14px 0;
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin: 10px 0;
-  }
-  .chicken-track::before {
-    content: "";
-    position: absolute;
-    left: 0; right: 0; top: 50%;
-    height: 2px;
-    background: repeating-linear-gradient(90deg, #22c55e 0, #22c55e 12px, transparent 12px, transparent 24px);
-    opacity: 0.35;
   }
   .chicken-lanes {
     position: relative;
@@ -208,7 +191,10 @@
     align-items: center;
     padding: 0 30px;
     gap: 40px;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
+  .chicken-lanes::-webkit-scrollbar { display: none; }
   .chicken-lane {
     position: relative;
     width: 60px;
@@ -219,9 +205,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 13px;
     color: #6b7280;
-    font-weight: 700;
+    font-weight: 800;
     transition: all 0.25s;
     flex-shrink: 0;
   }
@@ -229,31 +215,23 @@
   .chicken-lane.current { border-color: #fbbf24; box-shadow: 0 0 0 4px rgba(251,191,36,0.15); }
   .chicken-lane.dead { background: #2a0f0f; border-color: #ef4444; color: #ef4444; }
 
-  .chicken-emoji {
-    position: absolute;
-    font-size: 32px;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    transform: translateX(0);
-    z-index: 2;
-  }
-
   .multiplier-big {
     text-align: center;
-    font-size: 42px;
-    font-weight: 800;
+    font-size: 44px;
+    font-weight: 900;
     font-variant-numeric: tabular-nums;
     color: #22c55e;
-    margin: 12px 0;
+    margin: 12px 0 6px;
     letter-spacing: -1px;
   }
   .multiplier-big.dead { color: #ef4444; }
   .multiplier-sub {
     text-align: center;
-    font-size: 12px;
+    font-size: 11px;
     color: #6b7280;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    font-weight: 600;
+    letter-spacing: 1.2px;
+    font-weight: 700;
   }
 
   /* MINES */
@@ -262,7 +240,7 @@
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
     max-width: 420px;
-    margin: 0 auto;
+    margin: 18px auto;
   }
   .mine-tile {
     aspect-ratio: 1;
@@ -277,39 +255,34 @@
     transition: all 0.15s;
     user-select: none;
   }
-  .mine-tile:hover:not(.revealed) { background: #21262f; border-color: #3a4149; }
+  .mine-tile:hover:not(.revealed):not(.mine):not(.dim) { background: #21262f; border-color: #3a4149; transform: scale(1.03); }
   .mine-tile.revealed { background: #0d2818; border-color: #22c55e; cursor: default; }
   .mine-tile.mine { background: #2a0f0f; border-color: #ef4444; cursor: default; }
-  .mine-tile.hidden-reveal { background: #1f1a1a; border-color: #6b7280; opacity: 0.5; }
+  .mine-tile.dim { opacity: 0.4; cursor: default; }
 
   /* DICE */
   .dice-display {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
     padding: 40px 0;
   }
   .dice-roll {
     font-size: 64px;
-    font-weight: 800;
+    font-weight: 900;
     font-variant-numeric: tabular-nums;
-    color: #22c55e;
+    color: #e8eaed;
     transition: all 0.2s;
     letter-spacing: -2px;
   }
-  .dice-roll.win { color: #22c55e; text-shadow: 0 0 30px rgba(34,197,94,0.4); }
-  .dice-roll.lose { color: #ef4444; text-shadow: 0 0 30px rgba(239,68,68,0.4); }
+  .dice-roll.win { color: #22c55e; text-shadow: 0 0 30px rgba(34,197,94,0.5); }
+  .dice-roll.lose { color: #ef4444; text-shadow: 0 0 30px rgba(239,68,68,0.5); }
 
-  .slider-wrap {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 12px 0;
-  }
+  .slider-wrap { display: flex; align-items: center; gap: 12px; margin: 14px 0; }
   .slider-wrap input[type="range"] {
     flex: 1;
     -webkit-appearance: none;
+    appearance: none;
     height: 4px;
     background: #2a2f38;
     border-radius: 4px;
@@ -317,16 +290,35 @@
   }
   .slider-wrap input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    background: #22c55e;
+    background: #ef4444;
     cursor: pointer;
   }
+  .slider-wrap input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #ef4444;
+    cursor: pointer;
+    border: 0;
+  }
+
+  .dice-info {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 6px;
+    font-weight: 600;
+  }
+  .dice-info span b { color: #22c55e; }
 
   /* CRASH */
   .crash-display {
-    height: 240px;
+    height: 260px;
     background: #0f1115;
     border: 1px solid #2a2f38;
     border-radius: 12px;
@@ -334,23 +326,19 @@
     overflow: hidden;
     margin: 10px 0;
   }
-  .crash-curve {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
+  .crash-curve { position: absolute; inset: 0; width: 100%; height: 100%; }
   .crash-multiplier {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 56px;
-    font-weight: 800;
+    font-size: 58px;
+    font-weight: 900;
     color: #22c55e;
     font-variant-numeric: tabular-nums;
     letter-spacing: -2px;
     z-index: 2;
+    pointer-events: none;
   }
   .crash-multiplier.crashed { color: #ef4444; }
 
@@ -370,12 +358,13 @@
     flex-wrap: wrap;
     margin-top: 14px;
     justify-content: center;
+    min-height: 26px;
   }
   .plinko-chip {
     padding: 4px 10px;
     border-radius: 6px;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 800;
     font-variant-numeric: tabular-nums;
   }
   .plinko-chip.win { background: rgba(34,197,94,0.15); color: #22c55e; }
@@ -392,16 +381,17 @@
     padding: 12px 20px;
     border-radius: 10px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     z-index: 999;
     box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    max-width: 90vw;
+    text-align: center;
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
   .toast.win { border-color: #22c55e; color: #22c55e; }
   .toast.lose { border-color: #ef4444; color: #ef4444; }
 
-  /* MOBILE */
   .mobile-toggle {
     display: none;
     background: #14171d;
@@ -409,8 +399,9 @@
     color: #e8eaed;
     padding: 8px 12px;
     border-radius: 8px;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
+    font-family: inherit;
   }
 
   @media (max-width: 780px) {
@@ -429,7 +420,8 @@
     .controls { grid-template-columns: 1fr; }
     .dice-roll { font-size: 48px; }
     .multiplier-big { font-size: 34px; }
-    .crash-multiplier { font-size: 42px; }
+    .crash-multiplier { font-size: 40px; }
+    .crash-display { height: 200px; }
   }
 </style>
 </head>
@@ -439,8 +431,8 @@
 
   <aside class="sidebar" id="sidebar">
     <div class="brand">
-      <div class="brand-logo">R</div>
-      <div class="brand-name">Rainbet</div>
+      <div class="brand-logo">R$</div>
+      <div class="brand-name">Robux <span>Recycle</span></div>
     </div>
 
     <div class="nav-label">Games</div>
@@ -461,7 +453,7 @@
       <div class="balance">
         <div>
           <div class="balance-label">Balance</div>
-          <div class="balance-amount" id="balanceDisplay">10,000.00</div>
+          <div class="balance-amount" id="balanceDisplay">10,000 R$</div>
         </div>
         <button class="reset-btn" id="resetBtn">Reset</button>
       </div>
@@ -475,12 +467,11 @@
 
         <div class="chicken-track">
           <div class="chicken-lanes" id="chickenLanes"></div>
-          <div class="chicken-emoji" id="chickenEmoji">🐔</div>
         </div>
 
         <div class="controls">
           <div class="ctrl-group">
-            <label class="ctrl-label">Bet Amount</label>
+            <label class="ctrl-label">Bet (R$)</label>
             <input type="number" class="ctrl-input" id="chickenBet" value="100" min="1" step="10">
           </div>
           <div class="ctrl-group">
@@ -496,8 +487,8 @@
         </div>
 
         <div class="btn-row">
-          <button class="action-btn" id="chickenJump" disabled>Jump Forward</button>
-          <button class="action-btn danger" id="chickenCash" disabled>Cash Out</button>
+          <button class="action-btn green" id="chickenJump" disabled>Jump Forward</button>
+          <button class="action-btn" id="chickenCash" disabled>Cash Out</button>
         </div>
       </div>
     </section>
@@ -511,7 +502,7 @@
 
         <div class="controls">
           <div class="ctrl-group">
-            <label class="ctrl-label">Bet Amount</label>
+            <label class="ctrl-label">Bet (R$)</label>
             <input type="number" class="ctrl-input" id="minesBet" value="100" min="1" step="10">
           </div>
           <div class="ctrl-group">
@@ -525,7 +516,7 @@
         </div>
 
         <div class="btn-row">
-          <button class="action-btn danger" id="minesCash" disabled>Cash Out</button>
+          <button class="action-btn" id="minesCash" disabled>Cash Out</button>
         </div>
       </div>
     </section>
@@ -538,20 +529,19 @@
         </div>
 
         <div class="slider-wrap">
-          <span style="font-size:12px;color:#6b7280;min-width:70px">Roll under</span>
-          <input type="range" id="diceSlider" min="2" max="98" value="50">
-          <span style="font-size:14px;font-weight:700;min-width:50px;text-align:right;font-variant-numeric:tabular-nums" id="diceTarget">50</span>
+          <span style="font-size:12px;color:#6b7280;min-width:70px;font-weight:700">Roll under</span>
+          <input type="range" id="diceSlider" min="2" max="98" value="50" step="0.5">
+          <span style="font-size:15px;font-weight:800;min-width:55px;text-align:right;font-variant-numeric:tabular-nums" id="diceTargetLabel">50.00</span>
         </div>
 
-        <div style="text-align:center;font-size:12px;color:#6b7280;margin-top:4px">
-          Win chance: <span id="diceChance" style="color:#22c55e;font-weight:700">50%</span>
-          &nbsp;•&nbsp;
-          Payout: <span id="dicePayout" style="color:#22c55e;font-weight:700">1.98x</span>
+        <div class="dice-info">
+          <span>Win chance: <b id="diceChance">50.00%</b></span>
+          <span>Payout: <b id="dicePayout">1.98x</b></span>
         </div>
 
         <div class="controls">
           <div class="ctrl-group">
-            <label class="ctrl-label">Bet Amount</label>
+            <label class="ctrl-label">Bet (R$)</label>
             <input type="number" class="ctrl-input" id="diceBet" value="100" min="1" step="10">
           </div>
           <div></div>
@@ -570,11 +560,18 @@
 
         <div class="controls">
           <div class="ctrl-group">
-            <label class="ctrl-label">Bet Amount</label>
+            <label class="ctrl-label">Bet (R$)</label>
             <input type="number" class="ctrl-input" id="crashBet" value="100" min="1" step="10">
           </div>
-          <div></div>
+          <div class="ctrl-group">
+            <label class="ctrl-label">Auto Cash Out (x)</label>
+            <input type="number" class="ctrl-input" id="crashAuto" value="2.00" min="1.01" step="0.1">
+          </div>
           <button class="action-btn" id="crashStart">Place Bet</button>
+        </div>
+
+        <div class="btn-row">
+          <button class="action-btn green" id="crashCash" disabled>Cash Out</button>
         </div>
       </div>
     </section>
@@ -582,13 +579,13 @@
     <!-- PLINKO -->
     <section class="game-panel" id="panel-plinko">
       <div class="game-card">
-        <canvas class="plinko-canvas" id="plinkoCanvas" width="600" height="400"></canvas>
+        <canvas class="plinko-canvas" id="plinkoCanvas" width="600" height="380"></canvas>
 
         <div class="plinko-history" id="plinkoHistory"></div>
 
         <div class="controls">
           <div class="ctrl-group">
-            <label class="ctrl-label">Bet Amount</label>
+            <label class="ctrl-label">Bet (R$)</label>
             <input type="number" class="ctrl-input" id="plinkoBet" value="100" min="1" step="10">
           </div>
           <div class="ctrl-group">
@@ -610,143 +607,79 @@
 <div class="toast" id="toast"></div>
 
 <script>
-/* ═══════════════════════════════════════════════════════
-   STATE + PERSISTENCE
-   ═══════════════════════════════════════════════════════ */
-
-const STORAGE_KEY = "rainbet_balance";
+/* ═══════════ WALLET ═══════════ */
+const STORAGE_KEY = "robux_recycle_balance";
 const DEFAULT_BALANCE = 10000;
-
 let balance = parseFloat(localStorage.getItem(STORAGE_KEY) || DEFAULT_BALANCE);
 
-function saveBalance() {
-  localStorage.setItem(STORAGE_KEY, balance.toString());
-  document.getElementById("balanceDisplay").textContent = balance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+function fmt(n) {
+  return n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " R$";
 }
-
 function setBalance(v) {
-  balance = v;
-  saveBalance();
+  balance = Math.max(0, v);
+  localStorage.setItem(STORAGE_KEY, balance.toString());
+  document.getElementById("balanceDisplay").textContent = fmt(balance);
 }
-
-function adjustBalance(delta) {
-  setBalance(balance + delta);
-}
+function adjustBalance(delta) { setBalance(balance + delta); }
 
 document.getElementById("resetBtn").addEventListener("click", () => {
   setBalance(DEFAULT_BALANCE);
-  toast("Balance reset to 10,000", "win");
+  toast("Balance reset to 10,000 R$", "win");
 });
 
-/* ═══════════════════════════════════════════════════════
-   PROVABLY FAIR RNG (cosmetic but real math)
-   ═══════════════════════════════════════════════════════ */
-
-function hashCode(str) {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) {
-    h = ((h << 5) - h) + str.charCodeAt(i);
-    h |= 0;
-  }
-  return h >>> 0;
-}
-
-function randFloat() {
-  return Math.random();
-}
-
-/* ═══════════════════════════════════════════════════════
-   TOAST
-   ═══════════════════════════════════════════════════════ */
-
+/* ═══════════ TOAST ═══════════ */
 let toastTimer;
-function toast(msg, type = "") {
+function toast(msg, type) {
   const el = document.getElementById("toast");
   el.textContent = msg;
-  el.className = "toast show " + type;
+  el.className = "toast show " + (type || "");
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.className = "toast " + type, 2200);
+  toastTimer = setTimeout(() => el.className = "toast " + (type || ""), 2200);
 }
 
-/* ═══════════════════════════════════════════════════════
-   NAV
-   ═══════════════════════════════════════════════════════ */
-
+/* ═══════════ NAV ═══════════ */
 const navItems = document.querySelectorAll(".nav-item");
 const panels = document.querySelectorAll(".game-panel");
-const pageTitle = document.getElementById("pageTitle");
-
 navItems.forEach(item => {
   item.addEventListener("click", () => {
     navItems.forEach(i => i.classList.remove("active"));
     item.classList.add("active");
-    const game = item.dataset.game;
     panels.forEach(p => p.classList.remove("active"));
-    document.getElementById("panel-" + game).classList.add("active");
-    pageTitle.textContent = item.textContent.trim().replace(/^\S+\s/, "");
+    document.getElementById("panel-" + item.dataset.game).classList.add("active");
+    document.getElementById("pageTitle").textContent = item.textContent.replace(/^\S+\s/, "").trim();
     document.getElementById("sidebar").classList.remove("open");
   });
 });
-
 document.getElementById("mobileToggle").addEventListener("click", () => {
   document.getElementById("sidebar").classList.toggle("open");
 });
 
-/* ═══════════════════════════════════════════════════════
-   CHICKEN GAME
-   ═══════════════════════════════════════════════════════ */
+/* ═══════════ CHICKEN ═══════════ */
+const chickenOdds = { easy: 0.12, medium: 0.24, hard: 0.36, daredevil: 0.48 };
+const chickenStep = { easy: 1.18, medium: 1.34, hard: 1.58, daredevil: 1.92 };
+const chickenMaxLanes = 10;
 
-const chickenState = {
-  active: false,
-  lane: 0,
-  maxLane: 10,
-  multiplier: 1.0,
-  bet: 0,
-  difficulty: "medium"
-};
-
-const chickenOdds = {
-  easy: 0.15,
-  medium: 0.25,
-  hard: 0.35,
-  daredevil: 0.45
-};
-
-const chickenBaseMultiplier = {
-  easy: 1.15,
-  medium: 1.30,
-  hard: 1.50,
-  daredevil: 1.80
-};
+const chickenState = { active: false, lane: 0, multiplier: 1, bet: 0, difficulty: "medium" };
 
 function buildChickenLanes() {
-  const lanes = document.getElementById("chickenLanes");
-  lanes.innerHTML = "";
-  for (let i = 1; i <= chickenState.maxLane; i++) {
+  const c = document.getElementById("chickenLanes");
+  c.innerHTML = "";
+  for (let i = 1; i <= chickenMaxLanes; i++) {
     const lane = document.createElement("div");
     lane.className = "chicken-lane";
     lane.id = "lane-" + i;
     lane.textContent = i;
-    lanes.appendChild(lane);
+    c.appendChild(lane);
   }
 }
-
-function updateChickenLaneVisuals() {
-  for (let i = 1; i <= chickenState.maxLane; i++) {
-    const lane = document.getElementById("lane-" + i);
-    if (!lane) continue;
-    lane.classList.toggle("cleared", i <= chickenState.lane);
-    lane.classList.toggle("current", i === chickenState.lane + 1);
+function updateChickenLanes() {
+  for (let i = 1; i <= chickenMaxLanes; i++) {
+    const el = document.getElementById("lane-" + i);
+    if (!el) continue;
+    el.classList.toggle("cleared", i <= chickenState.lane);
+    el.classList.toggle("current", i === chickenState.lane + 1 && chickenState.active);
   }
-  // Move chicken
-  const emoji = document.getElementById("chickenEmoji");
-  const lanesEl = document.getElementById("chickenLanes");
-  const laneWidth = 100; // 60px lane + 40px gap
-  const startX = 30; // padding
-  const targetX = startX + chickenState.lane * laneWidth - 20;
-  emoji.style.transform = `translateX(${targetX}px)`;
 }
-
 function chickenStart() {
   if (chickenState.active) return;
   const bet = parseFloat(document.getElementById("chickenBet").value);
@@ -755,7 +688,7 @@ function chickenStart() {
 
   chickenState.active = true;
   chickenState.lane = 0;
-  chickenState.multiplier = 1.0;
+  chickenState.multiplier = 1;
   chickenState.bet = bet;
   chickenState.difficulty = document.getElementById("chickenDifficulty").value;
 
@@ -768,29 +701,21 @@ function chickenStart() {
   document.getElementById("chickenBet").disabled = true;
   document.getElementById("chickenDifficulty").disabled = true;
 
-  updateChickenLaneVisuals();
-  toast(`Chicken started — bet $${bet.toFixed(2)}`, "win");
+  updateChickenLanes();
+  toast(`Chicken started — bet ${fmt(bet)}`, "win");
 }
-
 function chickenJump() {
   if (!chickenState.active) return;
-  if (chickenState.lane >= chickenState.maxLane) return;
+  if (chickenState.lane >= chickenMaxLanes) return;
 
-  const deathChance = chickenOdds[chickenState.difficulty];
-  const survived = randFloat() > deathChance;
-
+  const survived = Math.random() > chickenOdds[chickenState.difficulty];
   if (survived) {
     chickenState.lane++;
-    chickenState.multiplier *= chickenBaseMultiplier[chickenState.difficulty];
+    chickenState.multiplier *= chickenStep[chickenState.difficulty];
     document.getElementById("chickenMultiplier").textContent = chickenState.multiplier.toFixed(2) + "x";
-    updateChickenLaneVisuals();
-
-    if (chickenState.lane >= chickenState.maxLane) {
-      // auto cashout at max lane
-      chickenCash();
-    }
+    updateChickenLanes();
+    if (chickenState.lane >= chickenMaxLanes) chickenCash();
   } else {
-    // died
     chickenState.active = false;
     document.getElementById("chickenMultiplier").textContent = "0.00x";
     document.getElementById("chickenMultiplier").className = "multiplier-big dead";
@@ -799,50 +724,31 @@ function chickenJump() {
     document.getElementById("chickenStart").disabled = false;
     document.getElementById("chickenBet").disabled = false;
     document.getElementById("chickenDifficulty").disabled = false;
-
-    const currentLaneEl = document.getElementById("lane-" + (chickenState.lane + 1));
-    if (currentLaneEl) currentLaneEl.classList.add("dead");
-    document.getElementById("chickenEmoji").textContent = "💀";
-    setTimeout(() => document.getElementById("chickenEmoji").textContent = "🐔", 1500);
-
-    toast(`Busted! Lost $${chickenState.bet.toFixed(2)}`, "lose");
+    const deadLane = document.getElementById("lane-" + (chickenState.lane + 1));
+    if (deadLane) deadLane.classList.add("dead");
+    toast(`Busted! Lost ${fmt(chickenState.bet)}`, "lose");
   }
 }
-
 function chickenCash() {
   if (!chickenState.active) return;
   const winnings = chickenState.bet * chickenState.multiplier;
   adjustBalance(winnings);
   chickenState.active = false;
-
   document.getElementById("chickenStart").disabled = false;
   document.getElementById("chickenJump").disabled = true;
   document.getElementById("chickenCash").disabled = true;
   document.getElementById("chickenBet").disabled = false;
   document.getElementById("chickenDifficulty").disabled = false;
-
-  toast(`Cashed out $${winnings.toFixed(2)} at ${chickenState.multiplier.toFixed(2)}x`, "win");
   document.getElementById("chickenMultiplier").className = "multiplier-big";
+  toast(`Cashed out ${fmt(winnings)} at ${chickenState.multiplier.toFixed(2)}x`, "win");
 }
-
 document.getElementById("chickenStart").addEventListener("click", chickenStart);
 document.getElementById("chickenJump").addEventListener("click", chickenJump);
 document.getElementById("chickenCash").addEventListener("click", chickenCash);
-
 buildChickenLanes();
 
-/* ═══════════════════════════════════════════════════════
-   MINES
-   ═══════════════════════════════════════════════════════ */
-
-const minesState = {
-  active: false,
-  bet: 0,
-  mines: 5,
-  minePositions: [],
-  revealed: [],
-  multiplier: 1.0
-};
+/* ═══════════ MINES ═══════════ */
+const minesState = { active: false, bet: 0, mines: 5, minePositions: [], revealed: [], multiplier: 1 };
 
 function buildMinesGrid() {
   const grid = document.getElementById("minesGrid");
@@ -855,7 +761,15 @@ function buildMinesGrid() {
     grid.appendChild(tile);
   }
 }
-
+function minesMultiplierCalc(revealed, totalMines) {
+  // combinatorial
+  let mult = 1;
+  const safeTotal = 25 - totalMines;
+  for (let i = 0; i < revealed; i++) {
+    mult *= (25 - i) / (safeTotal - i);
+  }
+  return mult * 0.97; // house edge
+}
 function minesStart() {
   if (minesState.active) return;
   const bet = parseFloat(document.getElementById("minesBet").value);
@@ -867,6 +781,47 @@ function minesStart() {
   minesState.bet = bet;
   minesState.mines = mineCount;
   minesState.revealed = [];
-  minesState.multiplier = 1.0;
+  minesState.multiplier = 1;
+  minesState.minePositions = [];
 
-  // pick mine positions
+  const pool = Array.from({ length: 25 }, (_, i) => i);
+  for (let i = 0; i < mineCount; i++) {
+    const idx = Math.floor(Math.random() * pool.length);
+    minesState.minePositions.push(pool.splice(idx, 1)[0]);
+  }
+
+  adjustBalance(-bet);
+  buildMinesGrid();
+  document.getElementById("minesMultiplier").textContent = "1.00x";
+  document.getElementById("minesMultiplier").className = "multiplier-big";
+  document.getElementById("minesStart").disabled = true;
+  document.getElementById("minesCash").disabled = false;
+  document.getElementById("minesBet").disabled = true;
+  document.getElementById("minesCount").disabled = true;
+  toast(`Mines started — ${mineCount} mines`, "win");
+}
+function minesReveal(i) {
+  if (!minesState.active) return;
+  if (minesState.revealed.includes(i)) return;
+
+  const tile = document.querySelector(`.mine-tile[data-index="${i}"]`);
+  if (!tile) return;
+
+  if (minesState.minePositions.includes(i)) {
+    // hit mine
+    minesState.active = false;
+    tile.classList.add("mine");
+    tile.textContent = "💥";
+    minesState.minePositions.forEach(mi => {
+      const el = document.querySelector(`.mine-tile[data-index="${mi}"]`);
+      if (el && mi !== i) { el.classList.add("mine"); el.textContent = "💣"; }
+    });
+    document.getElementById("minesStart").disabled = false;
+    document.getElementById("minesCash").disabled = true;
+    document.getElementById("minesBet").disabled = false;
+    document.getElementById("minesCount").disabled = false;
+    document.getElementById("minesMultiplier").textContent = "0.00x";
+    document.getElementById("minesMultiplier").className = "multiplier-big dead";
+    toast(`Boom! Lost ${fmt(minesState.bet)}`, "lose");
+  } else {
+    minesState
