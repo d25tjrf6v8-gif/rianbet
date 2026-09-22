@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f1115">
+<title>Rainbet</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: #0f1115;
+    color: #e8eaed;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* LAYOUT */
+  .app {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 100vh;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: #14171d;
+    border-right: 1px solid #1e2229;
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 8px 18px;
+    border-bottom: 1px solid #1e2229;
+    margin-bottom: 12px;
+  }
+  .brand-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 16px;
+    color: #0f1115;
+  }
+  .brand-name {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+  .nav-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6b7280;
+    padding: 12px 10px 4px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: all 0.12s;
+    user-select: none;
+  }
+  .nav-item:hover { background: #1a1e25; color: #e8eaed; }
+  .nav-item.active { background: #1e2229; color: #22c55e; }
+  .nav-item .ico { width: 16px; text-align: center; font-size: 14px; }
+
+  /* MAIN */
+  .main {
+    padding: 16px 20px 40px;
+    max-width: 1100px;
+    width: 100%;
+  }
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .page-title { font-size: 20px; font-weight: 700; }
+  .balance {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #14171d;
+    border: 1px solid #1e2229;
+    border-radius: 10px;
+    padding: 8px 14px;
+  }
+  .balance-label { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; }
+  .balance-amount { font-size: 16px; font-weight: 700; color: #22c55e; font-variant-numeric: tabular-nums; }
+  .reset-btn {
+    background: transparent;
+    border: 1px solid #2a2f38;
+    color: #9ca3af;
+    font-size: 11px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .reset-btn:hover { border-color: #22c55e; color: #22c55e; }
+
+  /* GAME PANELS */
+  .game-panel { display: none; }
+  .game-panel.active { display: block; }
+
+  .game-card {
+    background: #14171d;
+    border: 1px solid #1e2229;
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+
+  /* CONTROLS */
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 12px;
+    align-items: end;
+    margin-top: 16px;
+  }
+  .ctrl-group { display: flex; flex-direction: column; gap: 6px; }
+  .ctrl-label { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+  .ctrl-input {
+    background: #0f1115;
+    border: 1px solid #2a2f38;
+    color: #e8eaed;
+    height: 42px;
+    padding: 0 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    font-variant-numeric: tabular-nums;
+  }
+  .ctrl-input:focus { border-color: #22c55e; }
+
+  .action-btn {
+    height: 42px;
+    padding: 0 24px;
+    border: 0;
+    border-radius: 8px;
+    background: #22c55e;
+    color: #0f1115;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.12s;
+    letter-spacing: 0.2px;
+  }
+  .action-btn:hover { background: #16a34a; }
+  .action-btn:active { transform: translateY(1px); }
+  .action-btn:disabled { background: #2a2f38; color: #6b7280; cursor: not-allowed; }
+  .action-btn.danger { background: #ef4444; color: #fff; }
+  .action-btn.danger:hover { background: #dc2626; }
+
+  .btn-row { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+
+  /* CHICKEN GAME */
+  .chicken-track {
+    position: relative;
+    height: 180px;
+    background: #0f1115;
+    border: 1px solid #2a2f38;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  .chicken-track::before {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 50%;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, #22c55e 0, #22c55e 12px, transparent 12px, transparent 24px);
+    opacity: 0.35;
+  }
+  .chicken-lanes {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0 30px;
+    gap: 40px;
+  }
+  .chicken-lane {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #1a1e25;
+    border: 2px solid #2a2f38;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 700;
+    transition: all 0.25s;
+    flex-shrink: 0;
+  }
+  .chicken-lane.cleared { background: #0d2818; border-color: #22c55e; color: #22c55e; }
+  .chicken-lane.current { border-color: #fbbf24; box-shadow: 0 0 0 4px rgba(251,191,36,0.15); }
+  .chicken-lane.dead { background: #2a0f0f; border-color: #ef4444; color: #ef4444; }
+
+  .chicken-emoji {
+    position: absolute;
+    font-size: 32px;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: translateX(0);
+    z-index: 2;
+  }
+
+  .multiplier-big {
+    text-align: center;
+    font-size: 42px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: #22c55e;
+    margin: 12px 0;
+    letter-spacing: -1px;
+  }
+  .multiplier-big.dead { color: #ef4444; }
+  .multiplier-sub {
+    text-align: center;
+    font-size: 12px;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+  }
+
+  /* MINES */
+  .mines-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+  .mine-tile {
+    aspect-ratio: 1;
+    background: #1a1e25;
+    border: 1px solid #2a2f38;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .mine-tile:hover:not(.revealed) { background: #21262f; border-color: #3a4149; }
+  .mine-tile.revealed { background: #0d2818; border-color: #22c55e; cursor: default; }
+  .mine-tile.mine { background: #2a0f0f; border-color: #ef4444; cursor: default; }
+  .mine-tile.hidden-reveal { background: #1f1a1a; border-color: #6b7280; opacity: 0.5; }
+
+  /* DICE */
+  .dice-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 40px 0;
+  }
+  .dice-roll {
+    font-size: 64px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: #22c55e;
+    transition: all 0.2s;
+    letter-spacing: -2px;
+  }
+  .dice-roll.win { color: #22c55e; text-shadow: 0 0 30px rgba(34,197,94,0.4); }
+  .dice-roll.lose { color: #ef4444; text-shadow: 0 0 30px rgba(239,68,68,0.4); }
+
+  .slider-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+  }
+  .slider-wrap input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 4px;
+    background: #2a2f38;
+    border-radius: 4px;
+    outline: none;
+  }
+  .slider-wrap input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #22c55e;
+    cursor: pointer;
+  }
+
+  /* CRASH */
+  .crash-display {
+    height: 240px;
+    background: #0f1115;
+    border: 1px solid #2a2f38;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    margin: 10px 0;
+  }
+  .crash-curve {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .crash-multiplier {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 56px;
+    font-weight: 800;
+    color: #22c55e;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -2px;
+    z-index: 2;
+  }
+  .crash-multiplier.crashed { color: #ef4444; }
+
+  /* PLINKO */
+  .plinko-canvas {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    background: #0f1115;
+    border: 1px solid #2a2f38;
+    border-radius: 12px;
+  }
+  .plinko-history {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    justify-content: center;
+  }
+  .plinko-chip {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .plinko-chip.win { background: rgba(34,197,94,0.15); color: #22c55e; }
+  .plinko-chip.lose { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #1a1e25;
+    border: 1px solid #2a2f38;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 999;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.win { border-color: #22c55e; color: #22c55e; }
+  .toast.lose { border-color: #ef4444; color: #ef4444; }
+
+  /* MOBILE */
+  .mobile-toggle {
+    display: none;
+    background: #14171d;
+    border: 1px solid #1e2229;
+    color: #e8eaed;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 780px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      position: fixed;
+      left: 0; top: 0;
+      width: 240px;
+      z-index: 100;
+      transform: translateX(-100%);
+      transition: transform 0.25s;
+    }
+    .sidebar.open { transform: translateX(0); }
+    .mobile-toggle { display: block; }
+    .main { padding: 14px 14px 40px; }
+    .controls { grid-template-columns: 1fr; }
+    .dice-roll { font-size: 48px; }
+    .multiplier-big { font-size: 34px; }
+    .crash-multiplier { font-size: 42px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-logo">R</div>
+      <div class="brand-name">Rainbet</div>
+    </div>
+
+    <div class="nav-label">Games</div>
+    <div class="nav-item active" data-game="chicken"><span class="ico">🐔</span> Chicken</div>
+    <div class="nav-item" data-game="mines"><span class="ico">💎</span> Mines</div>
+    <div class="nav-item" data-game="dice"><span class="ico">🎲</span> Dice</div>
+    <div class="nav-item" data-game="crash"><span class="ico">📈</span> Crash</div>
+    <div class="nav-item" data-game="plinko"><span class="ico">🔻</span> Plinko</div>
+  </aside>
+
+  <main class="main">
+
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="mobile-toggle" id="mobileToggle">☰</button>
+        <div class="page-title" id="pageTitle">Chicken</div>
+      </div>
+      <div class="balance">
+        <div>
+          <div class="balance-label">Balance</div>
+          <div class="balance-amount" id="balanceDisplay">10,000.00</div>
+        </div>
+        <button class="reset-btn" id="resetBtn">Reset</button>
+      </div>
+    </div>
+
+    <!-- CHICKEN -->
+    <section class="game-panel active" id="panel-chicken">
+      <div class="game-card">
+        <div class="multiplier-sub">Current multiplier</div>
+        <div class="multiplier-big" id="chickenMultiplier">1.00x</div>
+
+        <div class="chicken-track">
+          <div class="chicken-lanes" id="chickenLanes"></div>
+          <div class="chicken-emoji" id="chickenEmoji">🐔</div>
+        </div>
+
+        <div class="controls">
+          <div class="ctrl-group">
+            <label class="ctrl-label">Bet Amount</label>
+            <input type="number" class="ctrl-input" id="chickenBet" value="100" min="1" step="10">
+          </div>
+          <div class="ctrl-group">
+            <label class="ctrl-label">Difficulty</label>
+            <select class="ctrl-input" id="chickenDifficulty">
+              <option value="easy">Easy</option>
+              <option value="medium" selected>Medium</option>
+              <option value="hard">Hard</option>
+              <option value="daredevil">Daredevil</option>
+            </select>
+          </div>
+          <button class="action-btn" id="chickenStart">Start Game</button>
+        </div>
+
+        <div class="btn-row">
+          <button class="action-btn" id="chickenJump" disabled>Jump Forward</button>
+          <button class="action-btn danger" id="chickenCash" disabled>Cash Out</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MINES -->
+    <section class="game-panel" id="panel-mines">
+      <div class="game-card">
+        <div class="multiplier-sub">Current multiplier</div>
+        <div class="multiplier-big" id="minesMultiplier">1.00x</div>
+        <div class="mines-grid" id="minesGrid"></div>
+
+        <div class="controls">
+          <div class="ctrl-group">
+            <label class="ctrl-label">Bet Amount</label>
+            <input type="number" class="ctrl-input" id="minesBet" value="100" min="1" step="10">
+          </div>
+          <div class="ctrl-group">
+            <label class="ctrl-label">Mines</label>
+            <select class="ctrl-input" id="minesCount">
+              <option>1</option><option>3</option><option selected>5</option>
+              <option>10</option><option>15</option><option>24</option>
+            </select>
+          </div>
+          <button class="action-btn" id="minesStart">Start Game</button>
+        </div>
+
+        <div class="btn-row">
+          <button class="action-btn danger" id="minesCash" disabled>Cash Out</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- DICE -->
+    <section class="game-panel" id="panel-dice">
+      <div class="game-card">
+        <div class="dice-display">
+          <div class="dice-roll" id="diceRoll">50.00</div>
+        </div>
+
+        <div class="slider-wrap">
+          <span style="font-size:12px;color:#6b7280;min-width:70px">Roll under</span>
+          <input type="range" id="diceSlider" min="2" max="98" value="50">
+          <span style="font-size:14px;font-weight:700;min-width:50px;text-align:right;font-variant-numeric:tabular-nums" id="diceTarget">50</span>
+        </div>
+
+        <div style="text-align:center;font-size:12px;color:#6b7280;margin-top:4px">
+          Win chance: <span id="diceChance" style="color:#22c55e;font-weight:700">50%</span>
+          &nbsp;•&nbsp;
+          Payout: <span id="dicePayout" style="color:#22c55e;font-weight:700">1.98x</span>
+        </div>
+
+        <div class="controls">
+          <div class="ctrl-group">
+            <label class="ctrl-label">Bet Amount</label>
+            <input type="number" class="ctrl-input" id="diceBet" value="100" min="1" step="10">
+          </div>
+          <div></div>
+          <button class="action-btn" id="diceRollBtn">Roll</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CRASH -->
+    <section class="game-panel" id="panel-crash">
+      <div class="game-card">
+        <div class="crash-display">
+          <canvas class="crash-curve" id="crashCanvas"></canvas>
+          <div class="crash-multiplier" id="crashMultiplier">1.00x</div>
+        </div>
+
+        <div class="controls">
+          <div class="ctrl-group">
+            <label class="ctrl-label">Bet Amount</label>
+            <input type="number" class="ctrl-input" id="crashBet" value="100" min="1" step="10">
+          </div>
+          <div></div>
+          <button class="action-btn" id="crashStart">Place Bet</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLINKO -->
+    <section class="game-panel" id="panel-plinko">
+      <div class="game-card">
+        <canvas class="plinko-canvas" id="plinkoCanvas" width="600" height="400"></canvas>
+
+        <div class="plinko-history" id="plinkoHistory"></div>
+
+        <div class="controls">
+          <div class="ctrl-group">
+            <label class="ctrl-label">Bet Amount</label>
+            <input type="number" class="ctrl-input" id="plinkoBet" value="100" min="1" step="10">
+          </div>
+          <div class="ctrl-group">
+            <label class="ctrl-label">Risk</label>
+            <select class="ctrl-input" id="plinkoRisk">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          <button class="action-btn" id="plinkoDrop">Drop Ball</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   STATE + PERSISTENCE
+   ═══════════════════════════════════════════════════════ */
+
+const STORAGE_KEY = "rainbet_balance";
+const DEFAULT_BALANCE = 10000;
+
+let balance = parseFloat(localStorage.getItem(STORAGE_KEY) || DEFAULT_BALANCE);
+
+function saveBalance() {
+  localStorage.setItem(STORAGE_KEY, balance.toString());
+  document.getElementById("balanceDisplay").textContent = balance.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function setBalance(v) {
+  balance = v;
+  saveBalance();
+}
+
+function adjustBalance(delta) {
+  setBalance(balance + delta);
+}
+
+document.getElementById("resetBtn").addEventListener("click", () => {
+  setBalance(DEFAULT_BALANCE);
+  toast("Balance reset to 10,000", "win");
+});
+
+/* ═══════════════════════════════════════════════════════
+   PROVABLY FAIR RNG (cosmetic but real math)
+   ═══════════════════════════════════════════════════════ */
+
+function hashCode(str) {
+  let h = 0;
+  for (let i = 0; i < str.length; i++) {
+    h = ((h << 5) - h) + str.charCodeAt(i);
+    h |= 0;
+  }
+  return h >>> 0;
+}
+
+function randFloat() {
+  return Math.random();
+}
+
+/* ═══════════════════════════════════════════════════════
+   TOAST
+   ═══════════════════════════════════════════════════════ */
+
+let toastTimer;
+function toast(msg, type = "") {
+  const el = document.getElementById("toast");
+  el.textContent = msg;
+  el.className = "toast show " + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.className = "toast " + type, 2200);
+}
+
+/* ═══════════════════════════════════════════════════════
+   NAV
+   ═══════════════════════════════════════════════════════ */
+
+const navItems = document.querySelectorAll(".nav-item");
+const panels = document.querySelectorAll(".game-panel");
+const pageTitle = document.getElementById("pageTitle");
+
+navItems.forEach(item => {
+  item.addEventListener("click", () => {
+    navItems.forEach(i => i.classList.remove("active"));
+    item.classList.add("active");
+    const game = item.dataset.game;
+    panels.forEach(p => p.classList.remove("active"));
+    document.getElementById("panel-" + game).classList.add("active");
+    pageTitle.textContent = item.textContent.trim().replace(/^\S+\s/, "");
+    document.getElementById("sidebar").classList.remove("open");
+  });
+});
+
+document.getElementById("mobileToggle").addEventListener("click", () => {
+  document.getElementById("sidebar").classList.toggle("open");
+});
+
+/* ═══════════════════════════════════════════════════════
+   CHICKEN GAME
+   ═══════════════════════════════════════════════════════ */
+
+const chickenState = {
+  active: false,
+  lane: 0,
+  maxLane: 10,
+  multiplier: 1.0,
+  bet: 0,
+  difficulty: "medium"
+};
+
+const chickenOdds = {
+  easy: 0.15,
+  medium: 0.25,
+  hard: 0.35,
+  daredevil: 0.45
+};
+
+const chickenBaseMultiplier = {
+  easy: 1.15,
+  medium: 1.30,
+  hard: 1.50,
+  daredevil: 1.80
+};
+
+function buildChickenLanes() {
+  const lanes = document.getElementById("chickenLanes");
+  lanes.innerHTML = "";
+  for (let i = 1; i <= chickenState.maxLane; i++) {
+    const lane = document.createElement("div");
+    lane.className = "chicken-lane";
+    lane.id = "lane-" + i;
+    lane.textContent = i;
+    lanes.appendChild(lane);
+  }
+}
+
+function updateChickenLaneVisuals() {
+  for (let i = 1; i <= chickenState.maxLane; i++) {
+    const lane = document.getElementById("lane-" + i);
+    if (!lane) continue;
+    lane.classList.toggle("cleared", i <= chickenState.lane);
+    lane.classList.toggle("current", i === chickenState.lane + 1);
+  }
+  // Move chicken
+  const emoji = document.getElementById("chickenEmoji");
+  const lanesEl = document.getElementById("chickenLanes");
+  const laneWidth = 100; // 60px lane + 40px gap
+  const startX = 30; // padding
+  const targetX = startX + chickenState.lane * laneWidth - 20;
+  emoji.style.transform = `translateX(${targetX}px)`;
+}
+
+function chickenStart() {
+  if (chickenState.active) return;
+  const bet = parseFloat(document.getElementById("chickenBet").value);
+  if (!bet || bet <= 0) return toast("Enter a valid bet", "lose");
+  if (bet > balance) return toast("Insufficient balance", "lose");
+
+  chickenState.active = true;
+  chickenState.lane = 0;
+  chickenState.multiplier = 1.0;
+  chickenState.bet = bet;
+  chickenState.difficulty = document.getElementById("chickenDifficulty").value;
+
+  adjustBalance(-bet);
+  document.getElementById("chickenMultiplier").textContent = "1.00x";
+  document.getElementById("chickenMultiplier").className = "multiplier-big";
+  document.getElementById("chickenStart").disabled = true;
+  document.getElementById("chickenJump").disabled = false;
+  document.getElementById("chickenCash").disabled = false;
+  document.getElementById("chickenBet").disabled = true;
+  document.getElementById("chickenDifficulty").disabled = true;
+
+  updateChickenLaneVisuals();
+  toast(`Chicken started — bet $${bet.toFixed(2)}`, "win");
+}
+
+function chickenJump() {
+  if (!chickenState.active) return;
+  if (chickenState.lane >= chickenState.maxLane) return;
+
+  const deathChance = chickenOdds[chickenState.difficulty];
+  const survived = randFloat() > deathChance;
+
+  if (survived) {
+    chickenState.lane++;
+    chickenState.multiplier *= chickenBaseMultiplier[chickenState.difficulty];
+    document.getElementById("chickenMultiplier").textContent = chickenState.multiplier.toFixed(2) + "x";
+    updateChickenLaneVisuals();
+
+    if (chickenState.lane >= chickenState.maxLane) {
+      // auto cashout at max lane
+      chickenCash();
+    }
+  } else {
+    // died
+    chickenState.active = false;
+    document.getElementById("chickenMultiplier").textContent = "0.00x";
+    document.getElementById("chickenMultiplier").className = "multiplier-big dead";
+    document.getElementById("chickenJump").disabled = true;
+    document.getElementById("chickenCash").disabled = true;
+    document.getElementById("chickenStart").disabled = false;
+    document.getElementById("chickenBet").disabled = false;
+    document.getElementById("chickenDifficulty").disabled = false;
+
+    const currentLaneEl = document.getElementById("lane-" + (chickenState.lane + 1));
+    if (currentLaneEl) currentLaneEl.classList.add("dead");
+    document.getElementById("chickenEmoji").textContent = "💀";
+    setTimeout(() => document.getElementById("chickenEmoji").textContent = "🐔", 1500);
+
+    toast(`Busted! Lost $${chickenState.bet.toFixed(2)}`, "lose");
+  }
+}
+
+function chickenCash() {
+  if (!chickenState.active) return;
+  const winnings = chickenState.bet * chickenState.multiplier;
+  adjustBalance(winnings);
+  chickenState.active = false;
+
+  document.getElementById("chickenStart").disabled = false;
+  document.getElementById("chickenJump").disabled = true;
+  document.getElementById("chickenCash").disabled = true;
+  document.getElementById("chickenBet").disabled = false;
+  document.getElementById("chickenDifficulty").disabled = false;
+
+  toast(`Cashed out $${winnings.toFixed(2)} at ${chickenState.multiplier.toFixed(2)}x`, "win");
+  document.getElementById("chickenMultiplier").className = "multiplier-big";
+}
+
+document.getElementById("chickenStart").addEventListener("click", chickenStart);
+document.getElementById("chickenJump").addEventListener("click", chickenJump);
+document.getElementById("chickenCash").addEventListener("click", chickenCash);
+
+buildChickenLanes();
+
+/* ═══════════════════════════════════════════════════════
+   MINES
+   ═══════════════════════════════════════════════════════ */
+
+const minesState = {
+  active: false,
+  bet: 0,
+  mines: 5,
+  minePositions: [],
+  revealed: [],
+  multiplier: 1.0
+};
+
+function buildMinesGrid() {
+  const grid = document.getElementById("minesGrid");
+  grid.innerHTML = "";
+  for (let i = 0; i < 25; i++) {
+    const tile = document.createElement("div");
+    tile.className = "mine-tile";
+    tile.dataset.index = i;
+    tile.addEventListener("click", () => minesReveal(i));
+    grid.appendChild(tile);
+  }
+}
+
+function minesStart() {
+  if (minesState.active) return;
+  const bet = parseFloat(document.getElementById("minesBet").value);
+  const mineCount = parseInt(document.getElementById("minesCount").value);
+  if (!bet || bet <= 0) return toast("Enter a valid bet", "lose");
+  if (bet > balance) return toast("Insufficient balance", "lose");
+
+  minesState.active = true;
+  minesState.bet = bet;
+  minesState.mines = mineCount;
+  minesState.revealed = [];
+  minesState.multiplier = 1.0;
+
+  // pick mine positions
